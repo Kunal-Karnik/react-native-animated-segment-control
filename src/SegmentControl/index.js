@@ -20,6 +20,20 @@ class SegmentControl extends React.Component {
       positionAnimationValue: new Animated.Value(0)
     }
   }
+  
+    shouldComponentUpdate = (prevProps, prevState) => {
+    if (this.props != prevProps) {
+      this.state.positionAnimationValue.setValue(this.state.activeSegmentPosition.x)
+      this.setState((prevState) => ({
+        selectedIndex: prevProps.selectedIndex,
+        activeSegmentPosition: {
+          x: prevState.segmentDimension.width * prevProps.selectedIndex + this.props.offsetHeight,
+          y: prevState.activeSegmentPosition.y,
+        },
+      }),()=>{this.state.positionAnimationValue.setValue(this.state.activeSegmentPosition.x)});
+    }
+    return true;
+  };
 
   /**
    * On segment change event.
